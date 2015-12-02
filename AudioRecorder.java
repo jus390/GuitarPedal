@@ -23,7 +23,7 @@ public class AudioRecorder {
             if(adm.getDeviceName(i).indexOf("Rocksmith")!=-1){
                 divRocksmith=i;
             }
-            //System.out.println(adm.getDeviceName(i));
+            //System.out.println("admDEvice" + adm.getDeviceName(i));
         }
         //System.out.print(adm.getDeviceName(divRocksmith));
         return divRocksmith;
