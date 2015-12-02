@@ -1,0 +1,31 @@
+
+import com.jsyn.ports.UnitInputPort;
+import com.jsyn.unitgen.Circuit;
+import com.jsyn.unitgen.SineOscillator;
+
+/**
+ * Created by Juš on 9.11.2015.
+ */
+public class SimpleEffect extends Circuit implements UnitSource {
+	
+	public final UnitInputPort input;
+	public final UnitOutputPort output;	
+	
+    SineOscillator osc;
+	Multiply mlt;
+    public UnitInputPort modulationFrequency;
+
+    public SimpleEffect(){
+		
+        
+        mlt=new Multiply();
+		add(mlt);
+		input = mlt.inputA;
+		
+		add( triOsc );
+        modulationFrequency = triOsc.frequency;
+        addPort( modulationFrequency );
+
+		output= mlt.output
+    }
+}
