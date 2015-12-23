@@ -13,7 +13,8 @@ public class AudioRecorder {
     static SynthContext synthContext;
     
     static SineOscillator tone;
-    static SimpleEffect effect;
+    //static DelayEffect effect;
+    static ReverbEffect effect;
     static PluckedString gtr;
 
     public int getRocksmithIndex(){
@@ -28,7 +29,7 @@ public class AudioRecorder {
         //System.out.print(adm.getDeviceName(divRocksmith));
         return divRocksmith;
     }
-    public static void run(){
+    public static void run() throws InterruptedException {
     	boolean noMic=true;
     	
         Synthesizer synth = JSyn.createSynthesizer();
@@ -46,25 +47,35 @@ public class AudioRecorder {
         //synth.add(gtr=new PluckedString());
         
         synth.add(lineOut);
-        synth.add(effect=new SimpleEffect());
-        effect.setAmplitude(0.5);
-        effect.setFrequency(0.2);
+        synth.add(effect=new ReverbEffect());
+        //effect.setAmplitude(0.5);
+        //effect.setFrequency(0.2);
         effect.output.connect( 0, lineOut.input, 0 );
         effect.output.connect( 0, lineOut.input, 1 );
         
         if (noMic){
 	        //no mic debug
 	        synth.add( tone=new SineOscillator());
+	        //synth.add( tone=new SineOscillator());
 	        tone.frequency.set(440);
-	        tone.amplitude.set(1);
+	        tone.amplitude.set(0);
 	        tone.output.connect(effect.input);
         }
         
-        channel0.output.connect(effect.input);
-        lineOut.start();
+        //channel0.output.connect(effect.input);
 
+
+        lineOut.start();
+        //Thread.sleep(1000);
+        Thread.sleep(2000);
+        tone.amplitude.set(0.8);
+        Thread.sleep(1000);
+        tone.amplitude.set(0);
+        //tone.amplitude.set(1);
+        //Thread.sleep(1000);
+        //tone.amplitude.set(0);
     }
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException {
         run();
 
     }
