@@ -14,7 +14,8 @@ public class AudioRecorder {
     
     static SineOscillator tone;
     //static DelayEffect effect;
-    static ReverbEffect effect;
+    //static ReverbEffect effect;
+    static TremoloEffect effect;
     static PluckedString gtr;
 
     public int getRocksmithIndex(){
@@ -47,7 +48,7 @@ public class AudioRecorder {
         //synth.add(gtr=new PluckedString());
         
         synth.add(lineOut);
-        synth.add(effect=new ReverbEffect());
+        synth.add(effect=new TremoloEffect());
         //effect.setAmplitude(0.5);
         //effect.setFrequency(0.2);
         effect.output.connect( 0, lineOut.input, 0 );
@@ -69,8 +70,8 @@ public class AudioRecorder {
         //Thread.sleep(1000);
         Thread.sleep(2000);
         tone.amplitude.set(0.8);
-        Thread.sleep(1000);
-        tone.amplitude.set(0);
+        //Thread.sleep(1000);
+        //tone.amplitude.set(0);
         //tone.amplitude.set(1);
         //Thread.sleep(1000);
         //tone.amplitude.set(0);

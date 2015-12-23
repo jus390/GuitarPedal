@@ -40,7 +40,7 @@ public class DelayEffect extends Circuit implements UnitSource {
         adder.inputB.connect(del.output);
         output = adder.output;
     }
-    
+
     @Override
     public UnitOutputPort getOutput() {
         return output;
