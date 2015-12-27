@@ -6,7 +6,7 @@ import com.jsyn.unitgen.*;
 import com.softsynth.jsyn.SynthContext;
 import com.softsynth.jsyn.circuits.PluckedString;
 
-public class AudioRecorder {
+public class IOinterface {
     static ChannelIn channel0;
     static ChannelIn channel1;
     static LineOut lineOut = new LineOut();

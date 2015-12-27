@@ -18,7 +18,8 @@ public class DelayEffect extends Circuit implements UnitSource {
     Add adder;
     float inGain = 1;
     float delayGain = 1;
-    float da = 100.0f;
+    double da = 2.0;
+
     public DelayEffect(){
 
         adder = new Add();
@@ -34,8 +35,9 @@ public class DelayEffect extends Circuit implements UnitSource {
 
         adder.inputA.connect(mlt.output);
         del.allocate(88200);
-        del.input.connect(mlt.output);
         del.delay.set(da);
+        del.input.connect(mlt.output);
+
 
         adder.inputB.connect(del.output);
         output = adder.output;
