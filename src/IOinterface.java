@@ -15,7 +15,8 @@ public class IOinterface {
     static SineOscillator tone;
     //static DelayEffect effect;
     //static ReverbEffect effect;
-    static TremoloEffect effect;
+    //static TremoloEffect effect;
+    static OctaveUpEffect effect;
     static PluckedString gtr;
 
     public int getRocksmithIndex(){
@@ -48,7 +49,7 @@ public class IOinterface {
         //synth.add(gtr=new PluckedString());
         
         synth.add(lineOut);
-        synth.add(effect=new TremoloEffect());
+        synth.add(effect=new OctaveUpEffect());
         //effect.setAmplitude(0.5);
         //effect.setFrequency(0.2);
         effect.output.connect( 0, lineOut.input, 0 );
