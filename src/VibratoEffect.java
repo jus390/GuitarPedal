@@ -1,5 +1,6 @@
 import com.jsyn.ports.UnitInputPort;
 import com.jsyn.ports.UnitOutputPort;
+import com.jsyn.unitgen.*;
 import com.jsyn.unitgen.Circuit;
 import com.jsyn.unitgen.PhaseShifter;
 import com.jsyn.unitgen.SineOscillator;
@@ -15,23 +16,32 @@ public class VibratoEffect extends Circuit implements UnitSource {
 
     PhaseShifter ps;
     SineOscillator osc;
+    MixerMonoRamped mix;
+    SquareOscillatorBL squareOsc;
+    Multiply masterIn;
+
 
     public VibratoEffect(){
 
-        ps = new PhaseShifter();
-        add(ps);
         osc = new SineOscillator();
         add(osc);
         osc.amplitude.set(1);
         osc.frequency.set(10);
 
+        masterIn=new Multiply();
+        add(masterIn);
+        input=masterIn.inputA;
+        masterIn.inputB.set(1);
 
-        input = ps.input;
+        mix=new MixerMonoRamped(2);
+        add(mix);
+        mix.input.connect(0, osc.output, 0);
+        mix.input.connect(1, masterIn.output, 0);
 
+        squareOsc = new SquareOscillatorBL();
+        squareOsc.frequency.connect(mix.output);
 
-        ps.offset.connect(osc.output);
-
-        output = ps.output;
+        output = squareOsc.output;
 
 
     }
