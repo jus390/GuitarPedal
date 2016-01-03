@@ -25,7 +25,7 @@ public class VibratoEffect extends Circuit implements UnitSource {
 
         osc = new SineOscillator();
         add(osc);
-        osc.amplitude.set(1);
+        osc.amplitude.set(0.3);
         osc.frequency.set(10);
 
         masterIn=new Multiply();
@@ -37,11 +37,13 @@ public class VibratoEffect extends Circuit implements UnitSource {
         add(mix);
         mix.input.connect(0, osc.output, 0);
         mix.input.connect(1, masterIn.output, 0);
+        output = mix.output;
 
         squareOsc = new SquareOscillatorBL();
+        add(squareOsc);
         squareOsc.frequency.connect(mix.output);
 
-        output = squareOsc.output;
+        //output = squareOsc.output;
 
 
     }

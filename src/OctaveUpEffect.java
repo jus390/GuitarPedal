@@ -12,8 +12,8 @@ public class OctaveUpEffect extends Circuit implements UnitSource {
 
     Multiply masterIn;
     SineOscillator osc;
-    InterpolatingDelay delay;
-    Multiply chorusGain;
+
+    MixerMonoRamped mix;
     Add adder;
 
     public OctaveUpEffect(){
@@ -29,12 +29,12 @@ public class OctaveUpEffect extends Circuit implements UnitSource {
         add(osc);
 
 
-        adder=new Add();
-        add(adder);
-        adder.inputA.connect(masterIn.output);
-        adder.inputB.connect(osc.output);
+        mix=new MixerMonoRamped(2);
+        add(mix);
+        mix.input.connect(0, osc.output, 0);
+        mix.input.connect(1, masterIn.output, 0);
+        output = mix.output;
 
-        output = adder.output;
     }
 
     @Override
