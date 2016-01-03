@@ -17,7 +17,8 @@ public class IOinterface {
     //static ReverbEffect effect;
     //static TremoloEffect effect;
     //static OctaveUpEffect effect;
-    static VibratoEffect effect;
+    //static VibratoEffect effect;
+    static PitchShiftEffect effect;
     static PluckedString gtr;
 
     public int getRocksmithIndex(){
@@ -50,7 +51,7 @@ public class IOinterface {
         //synth.add(gtr=new PluckedString());
         
         synth.add(lineOut);
-        synth.add(effect=new VibratoEffect());
+        synth.add(effect=new PitchShiftEffect());
         //effect.setAmplitude(0.5);
         //effect.setFrequency(0.2);
         effect.output.connect( 0, lineOut.input, 0 );
@@ -72,6 +73,10 @@ public class IOinterface {
         //Thread.sleep(1000);
         Thread.sleep(2000);
         tone.amplitude.set(0.8);
+        Thread.sleep(2000);
+        tone.amplitude.set(0);
+
+
         //Thread.sleep(1000);
         //tone.amplitude.set(0);
         //tone.amplitude.set(1);
