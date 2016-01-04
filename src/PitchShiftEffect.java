@@ -9,15 +9,17 @@ public class PitchShiftEffect extends Circuit implements UnitSource {
     public final UnitInputPort input;
     public final UnitOutputPort output;
 
-    public double pitchShift = 440;
+
     Multiply masterIn;
+    Add frequencyAdder;
     SineOscillator osc;
+    PitchDetector pd;
 
     MixerMonoRamped mix;
     Add adder;
 
     public PitchShiftEffect(){
-        masterIn=new Multiply();
+        /*masterIn=new Multiply();
         add(masterIn);
         input=masterIn.inputA;
         masterIn.inputB.set(1);
@@ -33,7 +35,30 @@ public class PitchShiftEffect extends Circuit implements UnitSource {
         add(mix);
         mix.input.connect(0, osc.output, 0);
         mix.input.connect(1, masterIn.output, 0);
-        output = mix.output;
+        output = mix.output;*/
+
+        masterIn=new Multiply();
+        add(masterIn);
+        input=masterIn.inputA;
+        masterIn.inputB.set(1);
+
+        pd = new PitchDetector();
+        add(pd);
+
+        pd.input.connect(masterIn.output);
+
+        frequencyAdder = new Add();
+        add(frequencyAdder);
+
+        frequencyAdder.inputA.connect(pd.frequency);
+        frequencyAdder.inputB.set(440);
+
+        osc=new SineOscillator();
+        add(osc);
+        osc.amplitude.connect(masterIn.output);
+        osc.frequency.connect(frequencyAdder.output);
+
+        output = osc.output;
 
     }
 
@@ -43,7 +68,7 @@ public class PitchShiftEffect extends Circuit implements UnitSource {
     }
 
     public void changePitchShift(double value){
-        pitchShift = value;
+        frequencyAdder.inputB.set(value);
     }
 
 }

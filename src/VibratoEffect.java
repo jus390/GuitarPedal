@@ -48,6 +48,14 @@ public class VibratoEffect extends Circuit implements UnitSource {
 
     }
 
+    public void setVibratoFreq(double freq){
+        osc.frequency.set(freq);
+    }
+
+    public void setVibratoAmplitude(double value) {
+        osc.amplitude.set(value);
+    }
+
     @Override
     public UnitOutputPort getOutput() {
         return output;

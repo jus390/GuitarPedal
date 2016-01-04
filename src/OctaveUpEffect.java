@@ -11,7 +11,9 @@ public class OctaveUpEffect extends Circuit implements UnitSource {
     public final UnitOutputPort output;
 
     Multiply masterIn;
+    Multiply octaveMult;
     SineOscillator osc;
+    PitchDetector pd;
 
     MixerMonoRamped mix;
     Add adder;
@@ -22,11 +24,22 @@ public class OctaveUpEffect extends Circuit implements UnitSource {
         input=masterIn.inputA;
         masterIn.inputB.set(1);
 
+        pd = new PitchDetector();
+        add(pd);
+
+        pd.input.connect(masterIn.output);
+
+        octaveMult = new Multiply();
+        add(octaveMult);
+
+        octaveMult.inputA.connect(pd.frequency);
+        octaveMult.inputB.set(2);
 
         osc=new SineOscillator();
-        osc.amplitude.set(0.8);
-        osc.frequency.set(440);
         add(osc);
+        osc.amplitude.connect(masterIn.output);
+        osc.frequency.connect(octaveMult.output);
+
 
 
         mix=new MixerMonoRamped(2);
@@ -34,6 +47,16 @@ public class OctaveUpEffect extends Circuit implements UnitSource {
         mix.input.connect(0, osc.output, 0);
         mix.input.connect(1, masterIn.output, 0);
         output = mix.output;
+
+    }
+
+    public void setOctave(int oct){
+        if(oct == 0){
+            octaveMult.inputB.set(2);
+        }
+        else{
+            octaveMult.inputB.set(0.5);
+        }
 
     }
 
