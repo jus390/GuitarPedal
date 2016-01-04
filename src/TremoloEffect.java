@@ -23,6 +23,8 @@ public class TremoloEffect extends Circuit implements UnitSource {
         input = mlt.inputA;
 
         osc=new SineOscillator();
+        osc.amplitude.set(0.5);
+        osc.frequency.set(4);
         add( osc );
 
         osc.output.connect(mlt.inputB);

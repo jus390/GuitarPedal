@@ -18,7 +18,7 @@ public class DelayEffect extends Circuit implements UnitSource {
     Add adder;
     float inGain = 1;
     float delayGain = 1;
-    double da = 2.0;
+    double da = 0.5;
 
     public DelayEffect(){
 

@@ -10,7 +10,7 @@ import com.jsyn.unitgen.UnitSource;
 /**
  * Created by jus390 on 12/27/15.
  */
-public class DistortionEffect extends Circuit implements UnitSource {
+public class FuzzEffect extends Circuit implements UnitSource {
 
     public final UnitInputPort input;
     public final UnitOutputPort output;
@@ -19,23 +19,22 @@ public class DistortionEffect extends Circuit implements UnitSource {
     DoubleTable waveShape;
     FunctionEvaluator shaper;
 
-    double shapeClean[] = { -0.8, -0.8, -0.8, -0.6, -0.2, 0.0, 0.2, 0.6, 0.8, 0.8, 0.8 };
     double shapeFuzz[] = { -0.8, -0.8, -0.8, -0.8, -0.8, 0.8, 0.8, 0.8, 0.8, 0.8 };
 
-    public DistortionEffect(int type){ //type=1-fuzz else normal dist
+    public FuzzEffect(int type){ //type=1-fuzz else normal dist
 
         gain=new Multiply();
         add(gain);
 
 
-        waveShape=new DoubleTable(shapeClean);
+        waveShape=new DoubleTable(shapeFuzz);
 
         shaper=new FunctionEvaluator();
         shaper.function.set(waveShape);
         add(shaper);
 
         input=gain.inputA;
-        gain.inputB.set(3);
+        gain.inputB.set(4);
         gain.output.connect(shaper.input);
 
         output=shaper.output;
