@@ -13,12 +13,13 @@ public class ReverbEffect extends Circuit implements UnitSource {
 
     Add adder1;
     Add adder2;
+    MixerMonoRamped mix;
     InterpolatingDelay intDelay;
     Multiply m1;
     Multiply m2;
     Multiply initialInputSplitter;
-    float fade = 0.5f;
-    float delayValue = 1;
+    float fade = 0.9f;
+    double delayValue = 0.05;
 
     public ReverbEffect(){
         initialInputSplitter = new Multiply();
@@ -55,10 +56,15 @@ public class ReverbEffect extends Circuit implements UnitSource {
         m2.inputA.connect(intDelay.output);
         m2.inputB.set(fade);
 
-        adder2.inputA.connect(m2.output);
-        adder2.inputB.connect(initialInputSplitter.output);
 
-        output = adder2.output;
+        mix=new MixerMonoRamped(2);
+        add(mix);
+        mix.input.connect(0,m2.output,0);
+        mix.input.connect(1,initialInputSplitter.output,0);
+        //adder2.inputA.connect(m2.output);
+        //adder2.inputB.connect(initialInputSplitter.output);
+
+        output = mix.output;
     }
 
 

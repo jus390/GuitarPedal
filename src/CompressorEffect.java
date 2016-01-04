@@ -1,4 +1,4 @@
-import com.jsyn.data.Function;
+
 import com.jsyn.ports.UnitInputPort;
 import com.jsyn.ports.UnitOutputPort;
 import com.jsyn.unitgen.*;
@@ -12,9 +12,8 @@ public class CompressorEffect extends Circuit implements UnitSource {
     public final UnitOutputPort output;
 
     Multiply masterIn;
-    FunctionEvaluator amplitude;
-    Divide div;
-    Maximum max;
+    Multiply outGain;
+    EnvelopeAttackDecay ead;
 
 
     public CompressorEffect(){
@@ -23,39 +22,19 @@ public class CompressorEffect extends Circuit implements UnitSource {
         input=masterIn.inputA;
         masterIn.inputB.set(1);
 
-        amplitude=new FunctionEvaluator();
-        add(amplitude);
+        outGain=new Multiply();
+        outGain.inputA.connect(masterIn.output);
+        add(outGain);
 
-        div=new Divide();
-        add(div);
+        ead=new EnvelopeAttackDecay();
+        ead.amplitude.connect(masterIn.output);
+        ead.attack.set(0.05);
+        ead.decay.set(0.8);
+        ead.input.set(0.8);
+        add(ead);
 
-        max=new Maximum();
-        add(max);
-        max.inputB.set(0.1);
-
-        Function getMaxAmplitude=new Function() {
-            double prev=0;
-            double max=0;
-            @Override
-            public double evaluate(double v) {
-                if(v<prev){
-                    max=prev;
-                }
-                prev=v;
-                return max;
-            }
-        };
-
-        amplitude.function.set(getMaxAmplitude);
-
-        masterIn.output.connect(amplitude.input);
-
-        amplitude.output.connect(max.inputA);
-
-        masterIn.output.connect(div.inputA);
-        max.output.connect(div.inputB);
-
-        output=div.output;
+        outGain.inputB.connect(ead.output);
+        output=outGain.output;
 
     }
 

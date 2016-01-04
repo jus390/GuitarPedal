@@ -14,34 +14,34 @@ public class IOinterface {
     
     static SineOscillator tone;
     //static DelayEffect effect;
-    //static ReverbEffect effect;
+    static ReverbEffect effect;
     //static TremoloEffect effect;
-    //static OctaveUpEffect effect;
-    //static VibratoEffect effect;
-    static PitchShiftEffect effect;
-    static PluckedString gtr;
+    //static ChorusEffect effect;
+    //static DistortionEffect effect;
+    //static CompressorEffect effect;
 
-    public int getRocksmithIndex(){
+    public static int getRocksmithIndex(){
         JavaSoundAudioDevice adm = new JavaSoundAudioDevice();
         int divRocksmith=0;
         for (int i=0;i<adm.getDeviceCount();i++){
-            if(adm.getDeviceName(i).indexOf("Rocksmith")!=-1){
+            if(adm.getDeviceName(i).indexOf("Adapter")!=-1){
                 divRocksmith=i;
+
             }
-            //System.out.println("admDEvice" + adm.getDeviceName(i));
+            System.out.println("Device: " + adm.getDeviceName(i));
         }
-        //System.out.print(adm.getDeviceName(divRocksmith));
+        System.out.println(adm.getDeviceName(divRocksmith));
         return divRocksmith;
     }
     public static void run() throws InterruptedException {
-    	boolean noMic=true;
+    	boolean noMic=false;
     	
         Synthesizer synth = JSyn.createSynthesizer();
 
-        synth.getAudioDeviceManager().setSuggestedOutputLatency( 0.04 );
+        synth.getAudioDeviceManager().setSuggestedOutputLatency( 0.3 );
         int numInputChannels = 2;
         int numOutputChannels = 2;
-        synth.start( 48000, AudioDeviceManager.USE_DEFAULT_DEVICE, numInputChannels, AudioDeviceManager.USE_DEFAULT_DEVICE,
+        synth.start( 44100, AudioDeviceManager.USE_DEFAULT_DEVICE, numInputChannels, AudioDeviceManager.USE_DEFAULT_DEVICE,
                 numOutputChannels );
 
         synth.add( channel0 = new ChannelIn(0));
@@ -49,11 +49,11 @@ public class IOinterface {
         
         
         //synth.add(gtr=new PluckedString());
-        
+
         synth.add(lineOut);
-        synth.add(effect=new PitchShiftEffect());
+        synth.add(effect=new ReverbEffect());
         //effect.setAmplitude(0.5);
-        //effect.setFrequency(0.2);
+        //effect.setFrequency(4);
         effect.output.connect( 0, lineOut.input, 0 );
         effect.output.connect( 0, lineOut.input, 1 );
         
@@ -65,18 +65,16 @@ public class IOinterface {
 	        tone.amplitude.set(0);
 	        tone.output.connect(effect.input);
         }
-        
-        //channel0.output.connect(effect.input);
+
+
+        channel0.output.connect(effect.input);
+
 
 
         lineOut.start();
         //Thread.sleep(1000);
-        Thread.sleep(2000);
-        tone.amplitude.set(0.8);
-        Thread.sleep(2000);
-        tone.amplitude.set(0);
-
-
+        //Thread.sleep(2000);
+        //tone.amplitude.set(0.8);
         //Thread.sleep(1000);
         //tone.amplitude.set(0);
         //tone.amplitude.set(1);

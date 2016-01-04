@@ -11,17 +11,23 @@ public class ChorusEffect extends Circuit implements UnitSource {
     public final UnitOutputPort output;
 
     Multiply masterIn;
-    SineOscillator osc;
+    TriangleOscillator osc;
     InterpolatingDelay delay;
     Multiply chorusGain;
     Add adder;
+    Add chorUp;
+    MixerMonoRamped mix;
 
     public ChorusEffect(){
 
-        osc=new SineOscillator();
-        osc.amplitude.set(0.3);
-        osc.frequency.set(5);
+        osc=new TriangleOscillator();
+        osc.amplitude.set(0.01);
+        osc.frequency.set(0.5);
         add(osc);
+
+        chorUp=new Add();
+        osc.output.connect(chorUp.inputA);
+        chorUp.inputB.set(0.01);
 
 
         masterIn=new Multiply();
@@ -30,10 +36,10 @@ public class ChorusEffect extends Circuit implements UnitSource {
         masterIn.inputB.set(1);
 
         delay=new InterpolatingDelay();
-        delay.allocate(88200);
+        delay.allocate(2*88200);
         add(delay);
 
-        osc.output.connect(delay.delay);
+        chorUp.output.connect(delay.delay);
 
         masterIn.output.connect(delay.input);
         chorusGain=new Multiply();
@@ -43,10 +49,17 @@ public class ChorusEffect extends Circuit implements UnitSource {
         delay.output.connect(chorusGain.inputA);
 
         adder=new Add();
-        chorusGain.output.connect(adder.inputA);
-        adder.inputB.connect(masterIn.output);
+        add(adder);
+        //adder.input[0];
+        mix=new MixerMonoRamped(2);
+        add(mix);
+        mix.input.connect(0,chorusGain.output,0);
+        mix.input.connect(1,masterIn.output,0);
+        //chorusGain.output.connect(adder.inputA);
+        //adder.inputB.connect(masterIn.output);
+        //adder.fade.set(0);
 
-        output=adder.output;
+        output=mix.output;
 
     }
 
