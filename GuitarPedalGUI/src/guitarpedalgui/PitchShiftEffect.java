@@ -16,7 +16,7 @@ public class PitchShiftEffect extends Circuit implements UnitSource {
     Add frequencyAdder;
     SineOscillator osc;
     PitchDetector pd;
-
+    maxAmplitude mAmp;
     MixerMonoRamped mix;
     Add adder;
 
@@ -57,6 +57,10 @@ public class PitchShiftEffect extends Circuit implements UnitSource {
 
         osc=new SineOscillator();
         add(osc);
+        /*mAmp=new maxAmplitude();
+        add(mAmp);
+        masterIn.output.connect(mAmp.input);*/
+        
         osc.amplitude.connect(masterIn.output);
         osc.frequency.connect(frequencyAdder.output);
 

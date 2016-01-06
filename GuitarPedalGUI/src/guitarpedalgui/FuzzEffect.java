@@ -21,7 +21,7 @@ public class FuzzEffect extends Circuit implements UnitSource {
     DoubleTable waveShape;
     FunctionEvaluator shaper;
 
-    double shapeFuzz[] = { -0.8, -0.8, -0.8, -0.8, -0.8, 0.8, 0.8, 0.8, 0.8, 0.8 };
+    double shapeFuzz[] = { -1, -1, -1, -1, -1, 1, 1, 1, 1, 1 };
 
     public FuzzEffect(){ //type=1-fuzz else normal dist
 

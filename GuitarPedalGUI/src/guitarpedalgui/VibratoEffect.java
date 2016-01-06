@@ -16,16 +16,24 @@ public class VibratoEffect extends Circuit implements UnitSource {
     public final UnitInputPort input;
     public final UnitOutputPort output;
 
-    PhaseShifter ps;
+    /*PhaseShifter ps;
     SineOscillator osc;
     MixerMonoRamped mix;
     SquareOscillatorBL squareOsc;
+    Multiply masterIn;*/
+    
     Multiply masterIn;
+    Add frequencyAdder;
+    SineOscillator osc;
+    PitchDetector pd;
+    maxAmplitude mAmp;
+    MixerMonoRamped mix;
+    SineOscillator osc2;
 
 
     public VibratoEffect(){
 
-        osc = new SineOscillator();
+        /*osc = new SineOscillator();
         add(osc);
         osc.amplitude.set(0.3);
         osc.frequency.set(10);
@@ -45,17 +53,48 @@ public class VibratoEffect extends Circuit implements UnitSource {
         add(squareOsc);
         squareOsc.frequency.connect(mix.output);
 
-        //output = squareOsc.output;
+        //output = squareOsc.output;*/
+        
+        masterIn=new Multiply();
+        add(masterIn);
+        input=masterIn.inputA;
+        masterIn.inputB.set(1);
+
+        pd = new PitchDetector();
+        add(pd);
+
+        pd.input.connect(masterIn.output);
+
+        frequencyAdder = new Add();
+        add(frequencyAdder);
+
+        frequencyAdder.inputA.connect(pd.frequency);
+        osc2=new SineOscillator();
+        add(osc2);
+        osc2.amplitude.set(220);
+        osc2.frequency.set(2);
+        frequencyAdder.inputB.connect(osc2.output);
+
+        osc=new SineOscillator();
+        add(osc);
+        /*mAmp=new maxAmplitude();
+        add(mAmp);
+        masterIn.output.connect(mAmp.input);*/
+        
+        osc.amplitude.connect(masterIn.output);
+        osc.frequency.connect(frequencyAdder.output);
+
+        output = osc.output;
 
 
     }
 
     public void setVibratoFreq(double freq){
-        osc.frequency.set(freq);
+        osc2.frequency.set(freq);
     }
 
     public void setVibratoAmplitude(double value) {
-        osc.amplitude.set(value);
+        osc2.amplitude.set(value);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class DistortionEffect extends Circuit implements UnitSource {
     DoubleTable waveShape;
     FunctionEvaluator shaper;
 
-    double shapeClean[] = { -0.8, -0.8, -0.8, -0.6, -0.2, 0.0, 0.2, 0.6, 0.8, 0.8, 0.8 };
+    double shapeClean[] = { -1, -1, -1, -0.8, -0.5, 0.0, 0.5, 0.8, 1, 1, 1 };
     double shapeFuzz[] = { -0.8, -0.8, -0.8, -0.8, -0.8, 0.8, 0.8, 0.8, 0.8, 0.8 };
 
     public DistortionEffect(){ //type=1-fuzz else normal dist

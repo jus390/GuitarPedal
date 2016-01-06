@@ -10,6 +10,7 @@ import com.jsyn.Synthesizer;
 import com.jsyn.devices.AudioDeviceManager;
 import com.jsyn.unitgen.ChannelIn;
 import com.jsyn.unitgen.LineOut;
+import com.jsyn.unitgen.MixerMono;
 import com.jsyn.unitgen.MixerMonoRamped;
 import com.jsyn.unitgen.Multiply;
 import com.softsynth.jsyn.SynthContext;
@@ -27,6 +28,8 @@ public class Gui_gp extends javax.swing.JFrame {
     static SynthContext synthContext;
     
     static Multiply masterIn;
+    static Multiply efxBypass;
+    static Multiply drBypass;
     static ChorusEffect chor;
     static DelayEffect del;
     static DistortionEffect dist;
@@ -38,9 +41,10 @@ public class Gui_gp extends javax.swing.JFrame {
     static TremoloEffect trem;
     static VibratoEffect vib;
     
-    static MixerMonoRamped distMix;
+    static MixerMono distMix;
     static MixerMonoRamped efxMix;
     static MixerMonoRamped drMix;
+    
             
     /**
      * Creates new form Gui_gp
@@ -79,10 +83,14 @@ public class Gui_gp extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jSlider5 = new javax.swing.JSlider();
+        jSlider12 = new javax.swing.JSlider();
+        jLabel14 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jSlider6 = new javax.swing.JSlider();
+        jLabel13 = new javax.swing.JLabel();
+        jSlider11 = new javax.swing.JSlider();
         jPanel9 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
@@ -91,6 +99,7 @@ public class Gui_gp extends javax.swing.JFrame {
         jPanel17 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel20 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jTabbedPane3 = new javax.swing.JTabbedPane();
         jPanel12 = new javax.swing.JPanel();
@@ -103,11 +112,13 @@ public class Gui_gp extends javax.swing.JFrame {
         jSlider9 = new javax.swing.JSlider();
         jLabel12 = new javax.swing.JLabel();
         jSlider10 = new javax.swing.JSlider();
+        jPanel10 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("GuitarPedal");
+        setResizable(false);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel3.setText("Type: ");
 
@@ -120,7 +131,6 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jLabel2.setText("Gain: ");
 
-        jSlider1.setValue(50);
         jSlider1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 distGainChange(evt);
@@ -156,7 +166,7 @@ public class Gui_gp extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSlider1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -178,7 +188,7 @@ public class Gui_gp extends javax.swing.JFrame {
             }
         });
 
-        jPanel14.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel14.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jSlider2.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -216,7 +226,7 @@ public class Gui_gp extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+                    .addComponent(jSlider2, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
                     .addComponent(jSlider4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSlider3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -236,7 +246,7 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jSlider4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
@@ -252,7 +262,7 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Chorus", jPanel6);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel6.setText("Frequency:");
 
@@ -262,15 +272,27 @@ public class Gui_gp extends javax.swing.JFrame {
             }
         });
 
+        jSlider12.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                changeTremAmp(evt);
+            }
+        });
+
+        jLabel14.setText("Amplitude:");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel14))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSlider5, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSlider12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSlider5, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -280,7 +302,11 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSlider5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSlider12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -296,7 +322,7 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Tremolo", jPanel7);
 
-        jPanel15.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel15.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel7.setText("Frequency:");
 
@@ -306,15 +332,27 @@ public class Gui_gp extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("Depth:");
+
+        jSlider11.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                changeVibAmp(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel15Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel7)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSlider6, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSlider6, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
+                    .addComponent(jSlider11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
@@ -324,7 +362,11 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSlider6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel13)
+                    .addComponent(jSlider11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -340,7 +382,7 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Vibrato", jPanel8);
 
-        jPanel16.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel16.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel8.setText("Offset:");
 
@@ -368,7 +410,7 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSlider7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
@@ -384,7 +426,7 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Pitch shift", jPanel9);
 
-        jPanel17.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel17.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel9.setText("Octave:");
 
@@ -413,7 +455,7 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(83, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
@@ -429,6 +471,19 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane2.addTab("Octavious", jPanel11);
 
+        javax.swing.GroupLayout jPanel20Layout = new javax.swing.GroupLayout(jPanel20);
+        jPanel20.setLayout(jPanel20Layout);
+        jPanel20Layout.setHorizontalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 514, Short.MAX_VALUE)
+        );
+        jPanel20Layout.setVerticalGroup(
+            jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 116, Short.MAX_VALUE)
+        );
+
+        jTabbedPane2.addTab("No effect", jPanel20);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -437,7 +492,7 @@ public class Gui_gp extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2)
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Effects", jPanel2);
@@ -448,7 +503,7 @@ public class Gui_gp extends javax.swing.JFrame {
             }
         });
 
-        jPanel18.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel18.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel10.setText("Delay:");
 
@@ -476,7 +531,7 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSlider8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
@@ -492,7 +547,7 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Delay", jPanel12);
 
-        jPanel19.setBorder(javax.swing.BorderFactory.createBevelBorder(0));
+        jPanel19.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel11.setText("Delay:");
 
@@ -536,7 +591,7 @@ public class Gui_gp extends javax.swing.JFrame {
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel12)
                     .addComponent(jSlider10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
@@ -552,6 +607,19 @@ public class Gui_gp extends javax.swing.JFrame {
 
         jTabbedPane3.addTab("Reverb", jPanel13);
 
+        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+        jPanel10.setLayout(jPanel10Layout);
+        jPanel10Layout.setHorizontalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 514, Short.MAX_VALUE)
+        );
+        jPanel10Layout.setVerticalGroup(
+            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 116, Short.MAX_VALUE)
+        );
+
+        jTabbedPane3.addTab("No effect", jPanel10);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -560,7 +628,7 @@ public class Gui_gp extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane3)
+            .addComponent(jTabbedPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Delay / Reverb", jPanel3);
@@ -573,7 +641,7 @@ public class Gui_gp extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
         );
 
         pack();
@@ -597,7 +665,7 @@ public class Gui_gp extends javax.swing.JFrame {
             fuzz.setEnabled(false);
             ovd.setEnabled(true);
             masterIn.setEnabled(false);
-        }else if(jComboBox1.getSelectedItem().equals("Fuzz")){
+        }else if(jComboBox1.getSelectedItem().equals("Clean")){
             dist.setEnabled(false);
             fuzz.setEnabled(false);
             ovd.setEnabled(false);
@@ -606,8 +674,29 @@ public class Gui_gp extends javax.swing.JFrame {
     }//GEN-LAST:event_distTypeChange
 
     private void distGainChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_distGainChange
-        double val=1+0.01*(double)jSlider2.getValue()*5;
-        chor.setGain(val);
+        double val=1+0.01*(double)jSlider2.getValue()*10;
+        dist.setGain(val);
+        if(jComboBox1.getSelectedItem().equals("Normal")){
+            dist.setGain(val);
+            fuzz.setGain(val);
+            ovd.setGain(val);
+            masterIn.setEnabled(false);
+        }else if(jComboBox1.getSelectedItem().equals("Fuzz")){
+            dist.setGain(val);
+            fuzz.setGain(val);
+            ovd.setGain(val);
+            masterIn.setEnabled(false);
+        }else if(jComboBox1.getSelectedItem().equals("Fuzz")){
+            dist.setGain(val);
+            fuzz.setGain(val);
+            ovd.setGain(val);
+            masterIn.setEnabled(false);
+        }else if(jComboBox1.getSelectedItem().equals("Clean")){
+            dist.setEnabled(false);
+            fuzz.setGain(val);
+            ovd.setGain(val);
+            masterIn.inputB.set(val);
+        }
     }//GEN-LAST:event_distGainChange
 
     private void chorGainChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chorGainChange
@@ -700,22 +789,48 @@ public class Gui_gp extends javax.swing.JFrame {
                 vib.setEnabled(false);
                 pitch.setEnabled(false);
                 octUp.setEnabled(true);
+                efxBypass.setEnabled(false);
+                break;
+            case 5:
+                chor.setEnabled(false);
+                trem.setEnabled(false);
+                vib.setEnabled(false);
+                pitch.setEnabled(false);
+                octUp.setEnabled(false);
+                efxBypass.setEnabled(true);
                 break;
         }
     }//GEN-LAST:event_efxChange
 
     private void drChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_drChange
-        switch(jTabbedPane2.getSelectedIndex()){
+        switch(jTabbedPane3.getSelectedIndex()){
             case 0:
                 del.setEnabled(true);
                 reverb.setEnabled(false);
+                drBypass.setEnabled(false);
                 break;
             case 1:
-                del.setEnabled(true);
+                del.setEnabled(false);
+                reverb.setEnabled(true);
+                drBypass.setEnabled(false);
+                break;
+            case 2:
+                del.setEnabled(false);
                 reverb.setEnabled(false);
+                drBypass.setEnabled(true);
                 break;
         }
     }//GEN-LAST:event_drChange
+
+    private void changeVibAmp(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_changeVibAmp
+        double val=80+0.01*(double)jSlider10.getValue()*440;
+        vib.setVibratoAmplitude(val);
+    }//GEN-LAST:event_changeVibAmp
+
+    private void changeTremAmp(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_changeTremAmp
+        double val=0.1+0.01*(double)jSlider11.getValue()*0.9;
+        vib.setVibratoAmplitude(val);
+    }//GEN-LAST:event_changeTremAmp
 
     /**
      * @param args the command line arguments
@@ -764,6 +879,15 @@ public class Gui_gp extends javax.swing.JFrame {
         synth.add(masterIn=new Multiply());
         masterIn.inputB.set(1);
         masterIn.setEnabled(false);
+        
+        synth.add(efxBypass=new Multiply());
+        efxBypass.inputB.set(1);
+        efxBypass.setEnabled(false);
+        
+        synth.add(drBypass=new Multiply());
+        drBypass.inputB.set(1);
+        drBypass.setEnabled(false);
+        
         synth.add(fuzz=new FuzzEffect());
         fuzz.setEnabled(false);
         synth.add(octUp=new OctaveUpEffect());
@@ -779,36 +903,45 @@ public class Gui_gp extends javax.swing.JFrame {
         synth.add(vib=new VibratoEffect());
         vib.setEnabled(false);
         
-        synth.add(distMix=new MixerMonoRamped(4));
-        channel0.output.connect(dist.input);
-        distMix.input.connect(0,dist.output,0);
-        channel0.output.connect(fuzz.input);
-        distMix.input.connect(1,fuzz.output,0);
-        channel0.output.connect(ovd.input);
-        distMix.input.connect(2,ovd.output,0);
-        channel0.output.connect(masterIn.inputA);
-        distMix.input.connect(3,masterIn.output,0);
         
-        synth.add(efxMix=new MixerMonoRamped(5));
+        
+        synth.add(efxMix=new MixerMonoRamped(6));
         efxMix.input.connect(0,chor.output,0);
-        distMix.output.connect(chor.input);
+        channel0.output.connect(chor.input);
         efxMix.input.connect(1,trem.output,0);
-        distMix.output.connect(trem.input);
+        channel0.output.connect(trem.input);
         efxMix.input.connect(2,vib.output,0);
-        distMix.output.connect(vib.input);
+        channel0.output.connect(vib.input);
         efxMix.input.connect(3,pitch.output,0);
-        distMix.output.connect(pitch.input);
+        channel0.output.connect(pitch.input);
         efxMix.input.connect(4,octUp.output,0);
-        distMix.output.connect(octUp.input);
+        channel0.output.connect(octUp.input);
+        efxMix.input.connect(5,efxBypass.output,0);
+        channel0.output.connect(efxBypass.inputA);
         
-        synth.add(drMix=new MixerMonoRamped(2));
+        synth.add(drMix=new MixerMonoRamped(3));
         drMix.input.connect(0,del.output,0);
         efxMix.output.connect(del.input);
         drMix.input.connect(1,reverb.output,0);
         efxMix.output.connect(reverb.input);
+        drMix.input.connect(2,drBypass.output,0);
+        efxMix.output.connect(drBypass.inputA);
         
-        drMix.output.connect( 0, lineOut.input, 0 );
-        drMix.output.connect( 0, lineOut.input, 1 );
+        
+        
+        synth.add(distMix=new MixerMono(4));
+        drMix.output.connect(dist.input);
+        distMix.input.connect(0,dist.output,0);
+        drMix.output.connect(fuzz.input);
+        distMix.input.connect(1,fuzz.output,0);
+        drMix.output.connect(ovd.input);
+        distMix.input.connect(2,ovd.output,0);
+        drMix.output.connect(masterIn.inputA);
+        distMix.input.connect(3,masterIn.output,0);
+        
+        distMix.output.connect( 0, lineOut.input, 0 );
+        distMix.output.connect( 0, lineOut.input, 1 );
+        
         lineOut.start();
         
        /* try {
@@ -835,6 +968,8 @@ public class Gui_gp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -844,6 +979,7 @@ public class Gui_gp extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -854,6 +990,7 @@ public class Gui_gp extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -863,6 +1000,8 @@ public class Gui_gp extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JSlider jSlider1;
     private javax.swing.JSlider jSlider10;
+    private javax.swing.JSlider jSlider11;
+    private javax.swing.JSlider jSlider12;
     private javax.swing.JSlider jSlider2;
     private javax.swing.JSlider jSlider3;
     private javax.swing.JSlider jSlider4;
