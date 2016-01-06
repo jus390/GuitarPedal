@@ -68,8 +68,14 @@ public class ReverbEffect extends Circuit implements UnitSource {
 
         output = mix.output;
     }
-
-
+    
+    public void setDelay(double sec){
+        intDelay.delay.set(sec);
+    }
+    
+    public void setFade(double val){
+        m1.inputB.set(val);
+    }
     @Override
     public UnitOutputPort getOutput() {
         return output;

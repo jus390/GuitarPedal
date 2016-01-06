@@ -64,6 +64,19 @@ public class ChorusEffect extends Circuit implements UnitSource {
         output=mix.output;
 
     }
+    
+    public void setGain(double val){
+        chorusGain.inputB.set(val);
+    }
+    
+    public void setDepth(double val){
+        osc.amplitude.set(val);
+        chorUp.inputB.set(val);
+    }
+    
+    public void setFreq(double val){
+        osc.frequency.set(val);
+    }
 
     @Override
     public UnitOutputPort getOutput() {
